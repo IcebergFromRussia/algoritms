@@ -9,7 +9,7 @@
 $matrix = array();
 $rowSize = 100;
 $columSize = 100;
-$needleNumber = 100;
+$needleNumber = 55;
 
 fillMatrixSecondMethod($matrix, $rowSize, $columSize, 10000);
 //showMatrix($matrix);

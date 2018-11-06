@@ -20,19 +20,17 @@ $matrix = array();
 $rowSize = 100;
 $columSize = 100;
 $map = array();
+$getMatrixValueCount = 0;
 
 fillMatrixSecondMethod($matrix, $rowSize, $columSize, 10000);
 //fillMatrix($matrix, $rowSize, $columSize);
 
-//var_dump($matrix);
 //showMatrix($matrix);
 
 $endFlag = true;
 //ячейка в которой хранится искомое значение
 $foundPoint = null;
-//$needleNumber = $matrix[$rowSize - 1][$columSize / 2];
 $needleNumber = 55;
-//print_r($needleNumber);
 //точка для обрезания матрицы
 $pointForFind = new Point();
 $borderPoint1 = new Point();
@@ -45,10 +43,7 @@ for ($i = 0; $i < 100; $i++) {
     //найти центральную ячейку
 
     $pointForFind = getPointByBorders($borderPoint1, $borderPoint2);
-
-//    var_dump($pointForFind);
     $value = getValueByPoint($matrix, $pointForFind, $map);
-//    var_dump($value);
     if ($value == $needleNumber) {
         $foundPoint = $pointForFind;
         break;
@@ -61,51 +56,48 @@ for ($i = 0; $i < 100; $i++) {
     } else {
         $borderPoint1 = $pointForFind;
     }
-//    var_dump($borderPoint1);
-    var_dump($borderPoint2);
-    print_r($i);
 
     //проверка получился ли прямоугольник 1 ширины
     if (pointMinusPoint($borderPoint1, $borderPoint2, 'x') == 1) {
         //поиск значения в одномерном массиве
         $rightBorder = new Point();
+        $leftBorder = new Point();
+        $leftBorder->setPoint($borderPoint1->x, 0);
         $rightBorder->setPoint($borderPoint2->x, $columSize);
 
-        if ($pointFromSearch = binarySearchForMatrix($matrix, $needleNumber, $borderPoint1, $rightBorder, $map)) {
+        if ($pointFromSearch = binarySearchForMatrix($matrix, $needleNumber, $leftBorder, $rightBorder, $map)) {
             $foundPoint = $pointFromSearch;
-            echo 'test1';
             break;
         }
         $borderPoint1->x = $borderPoint2->x;
         $borderPoint2->x = $rowSize;
     }
-    var_dump($borderPoint2);
     if (pointMinusPoint($borderPoint1, $borderPoint2, 'y') == 1) {
         //поиск значения в одномерном массиве
         $rightBorder = new Point();
+        $leftBorder = new Point();
+        $leftBorder->setPoint(0,  $borderPoint1->y);
         $rightBorder->setPoint($rowSize, $borderPoint2->y);
 
-        if ($pointFromSearch = binarySearchForMatrix($matrix, $needleNumber, $borderPoint1, $rightBorder, $map)) {
+        if ($pointFromSearch = binarySearchForMatrix($matrix, $needleNumber, $leftBorder, $rightBorder, $map)) {
             $foundPoint = $pointFromSearch;
-            echo 'test2';
             break;
 
         }
         $borderPoint1->y = $borderPoint2->y;
         $borderPoint2->y = $columSize;
     }
-    var_dump($borderPoint2);
 
     if (distanceBetweenPoints($borderPoint1, $borderPoint2) == 2) {
         $value = getValueByPoint($matrix, $borderPoint1, $map);
         if ($value == $needleNumber) {
             $foundPoint = $borderPoint1;
         }
-        echo 'test3';
         break;
     }
 }
 var_dump($foundPoint);
+var_dump($getMatrixValueCount);
 
 
 class Point
@@ -139,17 +131,17 @@ function pointMinusPoint(Point $p1, Point $p2, $field = null)
 function getPointByBorders(Point $p1, Point $p2)
 {
     $resultPoint = pointMinusPoint($p1, $p2);
-    $resultPoint->x = $p1->x + intdiv($resultPoint->x, 2);
-    $resultPoint->y = $p1->y + intdiv($resultPoint->y, 2);
+    $resultPoint->x = $p1->x + (($resultPoint->x > 1) ? (intdiv($resultPoint->x, 2)) : 1);
+    $resultPoint->y = $p1->y + (($resultPoint->y > 1) ? (intdiv($resultPoint->y, 2)) : 1);
     return $resultPoint;
 }
 
 
-function getValueByPoint($matrix, Point $point, &$map)
+function getValueByPoint ($matrix, Point $point, &$map)
 {
-    if(! isset($map[$point->x][$point->y])){
-//        print_r(1 );
-//        print_r(PHP_EOL);
+    if (!isset($map[$point->x][$point->y])) {
+        global $getMatrixValueCount;
+        $getMatrixValueCount++;
         $map[$point->x][$point->y] = $matrix[$point->x][$point->y];
     }
     return $matrix[$point->x][$point->y];
@@ -188,7 +180,7 @@ function binarySearchForMatrix(array $matrix, $needleValue, Point $border1, Poin
             return $buffPoint;
         }
 
-        if ($value > $needleValue) {
+        if ($value < $needleValue) {
             $rightBorder = $buffPoint;
         } else {
             $leftBorder = $buffPoint;
@@ -253,11 +245,11 @@ function fillMatrixSecondMethod(array &$matrix, $rowSize, $columnSize, $startNum
     }
 
     for ($j = 1; $j < $m; $j++) {
-        for($i = 0; $i < $n; $i++){
-            if( $j+$i >= $m){
+        for ($i = 0; $i < $n; $i++) {
+            if ($j + $i >= $m) {
                 break;
             }
-            $matrix[$n - 1 - $i][$j+$i] = $startNumber - $t;
+            $matrix[$n - 1 - $i][$j + $i] = $startNumber - $t;
             $t++;
         }
     }
