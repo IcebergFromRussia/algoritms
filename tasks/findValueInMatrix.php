@@ -39,7 +39,7 @@ $borderPoint2 = new Point();
 $borderPoint1->setPoint(0, 0);
 $borderPoint2->setPoint($rowSize, $columSize);
 
-for ($i = 0; $i < 100; $i++) {
+for ($i = 0; $i < $rowSize; $i++) {
     //найти центральную ячейку
 
     $pointForFind = getPointByBorders($borderPoint1, $borderPoint2);
@@ -132,7 +132,11 @@ function getPointByBorders(Point $p1, Point $p2)
 {
     $resultPoint = pointMinusPoint($p1, $p2);
     $resultPoint->x = $p1->x + (($resultPoint->x > 1) ? (intdiv($resultPoint->x, 2)) : 1);
+    if($resultPoint->x ==100)
+        $resultPoint->x--;
     $resultPoint->y = $p1->y + (($resultPoint->y > 1) ? (intdiv($resultPoint->y, 2)) : 1);
+    if($resultPoint->y ==100)
+        $resultPoint->y--;
     return $resultPoint;
 }
 
@@ -261,8 +265,8 @@ function showMatrix(array $matrix)
 {
     $rowSize = count($matrix);
     $columSize = count($matrix[0]);
-    for ($row = 0; $row < $rowSize; $row++) {
-        for ($colum = 0; $colum < $columSize; $colum++) {
+    for ($row = 90; $row < $rowSize; $row++) {
+        for ($colum = 90; $colum < $columSize; $colum++) {
             print_r($matrix[$row][$colum] . ' ');
         }
         print_r(PHP_EOL);

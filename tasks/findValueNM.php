@@ -27,8 +27,8 @@ for ($x = 0; $x <= $rowSize; $x += $direction) {
         $x += 1;
         $direction *= -1;
     }
-    print_r($matrix[$y][$x] );
-    print_r(PHP_EOL);
+//    print_r($matrix[$y][$x] );
+//    print_r(PHP_EOL);
     $count++;
     if ($direction > 0) {
         if ($matrix[$y][$x] < $needleNumber) {
