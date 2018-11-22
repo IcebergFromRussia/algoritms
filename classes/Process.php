@@ -32,4 +32,36 @@ class Process
         $this->endTime = $endTime;
         $this->fine = $fine;
     }
+
+    /**
+     * @return int
+     */
+    public function getEndTime(): int
+    {
+        return $this->endTime;
+    }
+
+    /**
+     * @param int $endTime
+     */
+    public function setEndTime(int $endTime): void
+    {
+        $this->endTime = $endTime;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFine(): int
+    {
+        return $this->fine;
+    }
+
+    /**
+     * @param int $fine
+     */
+    public function setFine(int $fine): void
+    {
+        $this->fine = $fine;
+    }
 }

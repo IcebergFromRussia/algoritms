@@ -27,11 +27,13 @@ class Set
      * Создаётся SetElement по входному объекту и добавляется в множество
      * @param $element
      * @var object
+     * @return SetElement
      */
-    public function addElement(&$element): void
+    public function &addElement(&$element)
     {
         $end = new SetElement($element, $this);
         $this->addSetElement($end);
+        return $end;
     }
 
     /**
@@ -43,6 +45,22 @@ class Set
         $end->setLeftNeighbour($this->getEndOfSet());
         $this->getEndOfSet()->setRightNeighbour($end);
         $this->setEndOfSet($end);
+    }
+
+    /**
+     * @param Set $set
+     * @return Set
+     */
+    public function addSet(Set $set)
+    {
+        if (empty($this->getRepresentative())) {
+            $this->setRepresentative($set->getRepresentative());
+            $this->setEndOfSet($set->getEndOfSet());
+            return $this;
+        }
+        $set->setRepresentative($this->getRepresentative());
+        $this->setEndOfSet($set->getEndOfSet());
+        return $this;
     }
 
     /**

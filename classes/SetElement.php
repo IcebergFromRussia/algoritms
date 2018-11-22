@@ -32,13 +32,18 @@ class SetElement
      * @var Set
      */
     private $setParent;
+    /**
+     * дополнительные данные
+     * @var array
+     */
+    private $elemData;
 
     /**
      * SetElement constructor.
      * @param Object $entity
      * @param Set $set
      */
-    public function __construct( &$entity, Set &$set)
+    public function __construct( &$entity, Set &$set = null)
     {
         $this->entity = &$entity;
         $this->setParent = &$set;
@@ -59,6 +64,13 @@ class SetElement
     {
         $this->entity = &$entity;
     }
+    /**
+     * @return Set
+     */
+    public function getSet(): Set
+    {
+        return $this->setParent;
+    }
 
     /**
      * @return SetElement
@@ -74,6 +86,23 @@ class SetElement
     public function setRightNeighbour(SetElement &$rightNeighbour): void
     {
         $this->rightNeighbour = &$rightNeighbour;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function &getElemData(): array
+    {
+        return $this->elemData;
+    }
+
+    /**
+     * @param array $elemData
+     */
+    public function setElemData(array $elemData): void
+    {
+        $this->elemData = $elemData;
     }
 
     /**
