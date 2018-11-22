@@ -36,14 +36,14 @@ class SetElement
      * дополнительные данные
      * @var array
      */
-    private $elemData;
+    private $elemData = array();
 
     /**
      * SetElement constructor.
      * @param Object $entity
      * @param Set $set
      */
-    public function __construct( &$entity, Set &$set = null)
+    public function __construct( &$entity, &$set = null)
     {
         $this->entity = &$entity;
         $this->setParent = &$set;
@@ -60,14 +60,14 @@ class SetElement
     /**
      * @param object $entity
      */
-    public function setEntity(&$entity): void
+    public function setEntity(&$entity)
     {
         $this->entity = &$entity;
     }
     /**
      * @return Set
      */
-    public function getSet(): Set
+    public function getSet()
     {
         return $this->setParent;
     }
@@ -75,7 +75,7 @@ class SetElement
     /**
      * @return SetElement
      */
-    public function &getRightNeighbour(): SetElement
+    public function &getRightNeighbour()
     {
         return $this->rightNeighbour;
     }
@@ -83,7 +83,7 @@ class SetElement
     /**
      * @param SetElement $rightNeighbour
      */
-    public function setRightNeighbour(SetElement &$rightNeighbour): void
+    public function setRightNeighbour( &$rightNeighbour)
     {
         $this->rightNeighbour = &$rightNeighbour;
     }
@@ -100,7 +100,7 @@ class SetElement
     /**
      * @param array $elemData
      */
-    public function setElemData(array $elemData): void
+    public function setElemData(array $elemData)
     {
         $this->elemData = $elemData;
     }
@@ -108,7 +108,7 @@ class SetElement
     /**
      * @return SetElement
      */
-    public function &getLeftNeighbour(): SetElement
+    public function &getLeftNeighbour()
     {
         return $this->leftNeighbour;
     }
@@ -116,7 +116,7 @@ class SetElement
     /**
      * @param SetElement $leftNeighbour
      */
-    public function setLeftNeighbour(SetElement &$leftNeighbour): void
+    public function setLeftNeighbour( &$leftNeighbour)
     {
         $this->leftNeighbour = &$leftNeighbour;
     }

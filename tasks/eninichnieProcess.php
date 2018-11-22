@@ -24,7 +24,7 @@ $arrayOfProcess = array(
     new Process(6, 10)
 );
 $startTime = 0;
-$endTime = 0;
+$endTime = 8;
 
 //timeLine
 /**
@@ -32,9 +32,11 @@ $endTime = 0;
  */
 $timeLine = array();
 
+$expiredProcess = array();
+
 $arrayOfSet = array();
 //for ($i = $startTime; $i <= $endTime; $i++){
-//    $time[$i] = null;
+//    $time[$i] = 0;
 //}
 
 //сортировка процессов по убыванию штрафа
@@ -55,31 +57,54 @@ usort($arrayOfProcess, function ($p1, $p2) {
 
 //итерационно получать по одному элементу
 foreach ($arrayOfProcess as $process) {
-    if ($setElement = $timeLine[$process->getEndTime()]) {
+    if (isset( $timeLine[$process->getEndTime()])) {
+        $setElement = $timeLine[$process->getEndTime()];
         $set = $setElement->getSet();
-        addProcess($set, $process);
+        if( ! addProcess($set, $process,$timeLine))
+            $expiredProcess[] = &$process;
     } else {
         $set = (new Set());
-        $elemData = $set->addElement($process)->getElemData();
+        $elem = $set->addElement($process);
+        $elemData = $elem->getElemData();
         $elemData['time'] = $process->getEndTime();
-        $timeLine[$process->getEndTime()] = $process;
+        $timeLine[$process->getEndTime()] = $elem;
     }
 }
 
+var_dump($timeLine);
 
- function addProcess(Set $set, Process &$process) use (&$timeLine) {
+//foreach ($timeLine as $element){
+//    $element->getElemData()['time'];
+//}
+
+
+//__________________________________________________________________
+
+function addProcess(Set $set, Process &$process, &$timeLine)
+{
     $representative = $set->getRepresentative();
+    if(! isset($timeLine[$representative->getElemData()['time'] - 1])){
+
+        return false;
+    }
     if (empty($timeLine[$representative->getElemData()['time'] - 1])) {
         $newSet = new Set();
-        $elemData = $newSet->addElement($process)->getElemData();
+        $elem = $newSet->addElement($process);
+        $elemData = $elem->getElemData();
         $elemData['time'] = $representative->getElemData()['time'] - 1;
-        $timeLine[$elemData['time']] = $process;
+        $timeLine[$elemData['time']] = $elem;
         $newSet->addSet($set);
-    } else {
-        /** @var $setElement SetElement */
-        $setElement = $timeLine[$representative->getElemData()['time'] - 1];
-        $newSet = $setElement->getSet();
-        $newSet->addSet($set);
-        addProcess($newSet, $process);
+        return true;
     }
-};
+
+    /** @var $setElement SetElement */
+    $setElement = $timeLine[$representative->getElemData()['time'] - 1];
+    $newSet = $setElement->getSet();
+    $newSet->addSet($set);
+    return addProcess($newSet, $process, $timeLine);
+
+}
+
+function addExpiredProcess(){
+
+}

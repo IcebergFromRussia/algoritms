@@ -40,10 +40,12 @@ class Set
      * Добавляет SetElement в множество
      * @var SetElement
      */
-    public function addSetElement(SetElement &$end): void
+    public function addSetElement(SetElement &$end)
     {
-        $end->setLeftNeighbour($this->getEndOfSet());
-        $this->getEndOfSet()->setRightNeighbour($end);
+        if(! $this->checkForEmpty($end)){
+            $end->setLeftNeighbour($this->getEndOfSet());
+            $this->getEndOfSet()->setRightNeighbour($end);
+        }
         $this->setEndOfSet($end);
     }
 
@@ -66,19 +68,16 @@ class Set
     /**
      * @param SetElement $end
      */
-    public function setEndOfSet(SetElement &$end): void
+    public function setEndOfSet(SetElement &$end)
     {
-        if (empty($this->getEndOfSet()) & empty($this->getRepresentative())) {
-            $this->endOfSet = $end;
-            $this->representative = $end;
-        }
+        $this->checkForEmpty($end);
         $this->endOfSet = $end;
     }
 
     /**
      * @return SetElement
      */
-    public function &getEndOfSet(): SetElement
+    public function &getEndOfSet()
     {
         return $this->endOfSet;
     }
@@ -86,7 +85,7 @@ class Set
     /**
      * @return SetElement
      */
-    public function &getRepresentative(): SetElement
+    public function &getRepresentative()
     {
         return $this->representative;
     }
@@ -94,12 +93,24 @@ class Set
     /**
      * @param SetElement $representative
      */
-    public function setRepresentative(SetElement $representative): void
+    public function setRepresentative(SetElement $representative)
     {
-        if (empty($this->getEndOfSet()) & empty($this->getRepresentative())) {
-            $this->endOfSet = $representative;
-            $this->representative = $representative;
-        }
+        $this->checkForEmpty($representative);
+        //TODO если указывается представитель должен ли он быть уже участником множества?
         $this->representative = $representative;
+    }
+
+    private function checkForEmpty($setElement)
+    {
+        $empty = false;
+        if (empty($this->getEndOfSet())) {
+            $this->endOfSet = $setElement;
+            $empty = true;
+        }
+        if (empty($this->getRepresentative())) {
+            $this->representative = $setElement;
+            $empty = true;
+        }
+        return $empty;
     }
 }
