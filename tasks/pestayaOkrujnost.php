@@ -13,13 +13,16 @@ use Helpers\GeomHelper;
 
 //список точек в прямоугольнике
 $points = [
-    (new Position())->setXY(2,2),
-    (new Position())->setXY(4,4),
-    (new Position())->setXY(7,6),
-    (new Position())->setXY(3,4),
-    (new Position())->setXY(5,4),
-    (new Position())->setXY(8,1),
+//    (new Position())->setXY(2,2),
+//    (new Position())->setXY(4,4),
+//    (new Position())->setXY(7,6),
+//    (new Position())->setXY(3,4),
+//    (new Position())->setXY(5,4),
+//    (new Position())->setXY(8,1),
     (new Position())->setXY(9,3),
+    (new Position())->setXY(9,9),
+    (new Position())->setXY(5,5),
+    (new Position())->setXY(2,4),
 ];
 
 //исходный прямоугольник
@@ -39,7 +42,7 @@ $deviation = 1;
 
 $radiusStep = 1;
 //максимальный радиус
-$radiusExtremum = 20;
+$radiusExtremum = 10;
 
 
 //цикл для увеличения радиуса
@@ -51,20 +54,27 @@ for ($radius = $radiusExtremum; $radius > 0; $radius -= $radiusStep) {
     /**
      * @var Rectangle[]
      */
-    $rectangles = [$rectangle];
-
+    $rectangles = [ $rectangle];
     while( !empty($rectangles) ){
-
+        reset($rectangles);
         $rec = current($rectangles);
         $recKey = key($rectangles);
         unset($rectangles[$recKey]);
 
-        foreach ($circles as $circle)
-            if( ! $circle->hasRectangle($rec)){
-                echo 'найден (' . $radius  ;
+        $hasRectangle = false;
+        foreach ($circles as $circle){
+            if(  $circle->hasRectangle($rec)){
+                $hasRectangle = true;
                 break;
             }
-        if($geomHelper->rectangleSideLength($rec) > $deviation){
+        }
+        if(! $hasRectangle){
+            var_dump($geomHelper->rectangleCentre($rec));
+            echo 'найден (' . $radius . ')'  ;
+            break(2);
+        }
+        if($geomHelper->rectangleSideLength($rec) > 1){
+//        if($rec->getArea() > 1){
             $rectangles = array_merge($rectangles, $geomHelper->recCut($rec));
         }
     }

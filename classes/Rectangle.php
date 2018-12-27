@@ -24,6 +24,8 @@ class Rectangle
 
     private $area;
 
+
+
     public function __construct($tangles)
     {
         $this->tangles = $tangles;
@@ -71,6 +73,13 @@ class Rectangle
     public function getTangles(): array
     {
         return $this->tangles;
+    }
+    /**
+     * @return float|int
+     */
+    public function getArea()
+    {
+        return $this->area;
     }
 
     /**

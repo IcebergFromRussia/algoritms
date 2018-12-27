@@ -18,11 +18,11 @@ class Circle extends Position
 
     public function hasRectangle(Rectangle $rectangle){
         foreach ($rectangle->getTangles() as $tangle){
-            if(sqrt(($tangle->x - $this->x)**2 + ($tangle->y - $this->y)**2) > $this->radius){
-                return false;
+            if(floor(sqrt(($tangle->getX() - $this->x)**2 + ($tangle->getY() - $this->y)**2)) <= $this->radius){
+                return true;
             };
         }
-        return true;
+        return false;
     }
 
     public function setPosition(Position $position)

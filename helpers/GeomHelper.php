@@ -29,6 +29,16 @@ class GeomHelper
         return (new Position())->setXY($x,$y);
     }
 
+    public function rectangleCentre(Rectangle $rectangle){
+        $tangles = $rectangle->getTangles();
+        reset($tangles);
+        $tangle1 = current($tangles);
+        $tangle2 = next($tangles);
+        $tangle3 = next($tangles);
+
+        return $this->lineCentre($tangle1, $tangle3);
+    }
+
     /**
      * дробление прямоугольника на 4
      * @param Rectangle $rectangle
@@ -36,7 +46,7 @@ class GeomHelper
      */
     public function recCut(Rectangle $rectangle){
         $tangles = $rectangle->getTangles();
-
+        reset($tangles);
         $tangle1 = current($tangles);
         $tangle2 = next($tangles);
         $tangle3 = next($tangles);
@@ -90,9 +100,9 @@ class GeomHelper
     public function rectangleSideLength(Rectangle $rectangle){
 
         $tangles = $rectangle->getTangles();
+        reset($tangles);
         $p1 = current($tangles);
         $p2 = next($tangles);
-
-        return sqrt(abs(($p1->getX() - $p2->getX()) * ($p1->getY() - $p2->getY())));
+        return sqrt(abs(($p1->getX() - $p2->getX()) + ($p1->getY() - $p2->getY())));
     }
 }
