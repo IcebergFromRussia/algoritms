@@ -45,14 +45,14 @@ $radiusStep = 1;
 $radiusExtremum = 10;
 
 
-//цикл для увеличения радиуса
+//цикл для уменьшения радиуса
 for ($radius = $radiusExtremum; $radius > 0; $radius -= $radiusStep) {
 
     //окружности
     $circles = $geomHelper->createCircleByPoints($points, $radius);
     //цикл дробления прямоугольника
     /**
-     * @var Rectangle[]
+     * @var Rectangle[] $rectangles
      */
     $rectangles = [ $rectangle];
     while( !empty($rectangles) ){
