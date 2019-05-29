@@ -16,12 +16,26 @@ use Classes\Rectangle;
 class GeomHelper
 {
 
+    /**
+     * площадь треугольника
+     * @param Position $p1
+     * @param Position $p2
+     * @param Position $p3
+     * @return float|int
+     */
     public function areaByThreePoints( Position $p1, Position $p2, Position $p3){
         $area = (($p2->getX() - $p1->getX())*($p3->getY() - $p1->getY()) -
                 ($p2->getY() - $p1->getY())*($p3->getX() - $p1->getX()))/2;
         return $area;
     }
 
+    /**
+     * центр прямой
+     *
+     * @param Position $p1
+     * @param Position $p2
+     * @return Position
+     */
     public function lineCentre(Position $p1, Position $p2){
         $x = ($p1->getX() + $p2->getX()) /2;
         $y = ($p1->getY() + $p2->getY()) /2;
@@ -29,6 +43,12 @@ class GeomHelper
         return (new Position())->setXY($x,$y);
     }
 
+    /**
+     * центр прямоугольника
+     *
+     * @param Rectangle $rectangle
+     * @return Position
+     */
     public function rectangleCentre(Rectangle $rectangle){
         $tangles = $rectangle->getTangles();
         reset($tangles);
@@ -97,6 +117,12 @@ class GeomHelper
         return $result;
     }
 
+    /**
+     * длина одной из сторон прямоугольника
+     *
+     * @param Rectangle $rectangle
+     * @return float
+     */
     public function rectangleSideLength(Rectangle $rectangle){
 
         $tangles = $rectangle->getTangles();

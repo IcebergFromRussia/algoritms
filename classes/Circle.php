@@ -16,6 +16,12 @@ class Circle extends Position
      */
     protected $radius;
 
+    /**
+     * лежит ли прямоугольник в окружности
+     *
+     * @param Rectangle $rectangle
+     * @return bool
+     */
     public function hasRectangle(Rectangle $rectangle){
         foreach ($rectangle->getTangles() as $tangle){
             if(floor(sqrt(($tangle->getX() - $this->x)**2 + ($tangle->getY() - $this->y)**2)) <= $this->radius){

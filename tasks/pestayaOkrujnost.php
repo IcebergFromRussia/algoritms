@@ -52,27 +52,34 @@ for ($radius = $radiusExtremum; $radius > 0; $radius -= $radiusStep) {
     $circles = $geomHelper->createCircleByPoints($points, $radius);
     //цикл дробления прямоугольника
     /**
+     * очередь
      * @var Rectangle[] $rectangles
      */
     $rectangles = [ $rectangle];
+    //пробегаем по всем прямоугольникам очереди
     while( !empty($rectangles) ){
+        //берём первый элемент
         reset($rectangles);
         $rec = current($rectangles);
         $recKey = key($rectangles);
+        //удаляем по ключу
         unset($rectangles[$recKey]);
 
         $hasRectangle = false;
+        //проверяем лежит ли прямоугольник в какой-нибудь окружности
         foreach ($circles as $circle){
             if(  $circle->hasRectangle($rec)){
                 $hasRectangle = true;
                 break;
             }
         }
+        //если нашелся прямоугольник, который не лежит в окружности
         if(! $hasRectangle){
             var_dump($geomHelper->rectangleCentre($rec));
             echo 'найден (' . $radius . ')'  ;
             break(2);
         }
+        //Дробление
         if($geomHelper->rectangleSideLength($rec) > 1){
 //        if($rec->getArea() > 1){
             $rectangles = array_merge($rectangles, $geomHelper->recCut($rec));

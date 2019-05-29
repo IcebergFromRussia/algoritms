@@ -36,7 +36,7 @@ class Rectangle
         $recPoint2 = next($this->tangles);
         $recPoint3 = next($this->tangles);
 
-        $this->area = $this->geomHelper->areaByThreePoints($recPoint1,$recPoint2,$recPoint3);
+        $this->area = $this->geomHelper->areaByThreePoints($recPoint1,$recPoint2,$recPoint3) *2;
     }
 
     /**
